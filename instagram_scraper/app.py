@@ -282,12 +282,15 @@ class InstagramScraper(object):
         self.session.headers.update({'X-CSRFToken': req.cookies['csrftoken'], 'X-Instagram-AJAX': '1'})
 
         self.session.headers.update({'Referer': BASE_URL[:-1] + checkpoint_url})
-        mode = int(input('Choose a challenge mode (0 - SMS, 1 - Email): '))
+        mode = 1
         challenge_data = {'choice': mode}
         challenge = self.session.post(BASE_URL[:-1] + checkpoint_url, data=challenge_data, allow_redirects=True)
         self.session.headers.update({'X-CSRFToken': challenge.cookies['csrftoken'], 'X-Instagram-AJAX': '1'})
 
-        code = int(input('Enter code received: '))
+        import time
+        time.sleep(90)
+        # code = int(input('Enter code received: '))
+        code = requests.get('https://muse-amuse.in/~punchagan/instagram-code.txt').text.strip()
         code_data = {'security_code': code}
         code = self.session.post(BASE_URL[:-1] + checkpoint_url, data=code_data, allow_redirects=True)
         self.session.headers.update({'X-CSRFToken': code.cookies['csrftoken']})
